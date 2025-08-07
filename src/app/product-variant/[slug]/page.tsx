@@ -5,12 +5,11 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/common/footer";
 import { Header } from "@/components/common/header";
 import ProductList from "@/components/common/product-list";
-import { Button } from "@/components/ui/button";
 import { db } from "@/db";
 import { productTable, productVariantTable } from "@/db/schema";
 import { formatCentsToBRL } from "@/helpers/money";
 
-import QuantitySelector from "./components/quantity-selector";
+import ProductActions from "./components/product-actions";
 import VariantSelector from "./components/variant-selector";
 
 interface ProductVariantPageProps {
@@ -43,51 +42,40 @@ const ProductVariantPage = async ({ params }: ProductVariantPageProps) => {
       <Header />
       <div className="flex flex-col space-y-5">
         <Image
-            src={productVariant.imageUrl}
-            alt={productVariant.name}
-            sizes="100vw"
-            height={0}
-            width={0}
-            className="h-auto w-full object-cover"
+          src={productVariant.imageUrl}
+          alt={productVariant.name}
+          sizes="100vw"
+          height={0}
+          width={0}
+          className="h-auto w-full object-cover"
         />
 
         <div className="px-5">
-            <VariantSelector
-                selectedVariantSlug={productVariant.slug}
-                variants={productVariant.product.variants}
-            />
+          <VariantSelector
+            selectedVariantSlug={productVariant.slug}
+            variants={productVariant.product.variants}
+          />
         </div>
 
         <div className="px-5">
-            {/* DESCRIÇÃO */}
-            <h2 className="text-lg font-semibold">
-                {productVariant.product.name}
-            </h2>
-            <h3 className="text-muted-foreground text-sm">
-                {productVariant.name}
-            </h3>
-            <h3 className="text-lg font-semibold">
-                {formatCentsToBRL(productVariant.priceInCents)}
-            </h3>
+          {/* DESCRIÇÃO */}
+          <h2 className="text-lg font-semibold">
+            {productVariant.product.name}
+          </h2>
+          <h3 className="text-muted-foreground text-sm">
+            {productVariant.name}
+          </h3>
+          <h3 className="text-lg font-semibold">
+            {formatCentsToBRL(productVariant.priceInCents)}
+          </h3>
         </div>
 
-        <div className="px-5">
-            <QuantitySelector />
-        </div>
-        <div className="flex flex-col space-y-4 px-5">
-            {/* BOTÕES */}
-            <Button className="rounded-full" size="lg" variant="outline">
-                Adicionar à sacola
-            </Button>
-            <Button className="rounded-full" size="lg">
-                Comprar agora
-            </Button>
-        </div>
+        <ProductActions productVariantId={productVariant.id} />
 
         <div className="px-5">
-            <p className="text-shadow-amber-600">
-                {productVariant.product.description}
-            </p>
+          <p className="text-shadow-amber-600">
+            {productVariant.product.description}
+          </p>
         </div>
 
         <ProductList title="Talvez você goste" products={likelyProducts} />
